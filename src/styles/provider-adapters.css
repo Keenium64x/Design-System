@@ -1,0 +1,158 @@
+/* =============================================================================
+/* region FRAPPE UI PROVIDER ADAPTER
+/* ============================================================================= */
+
+/*
+ * Frappe UI renders some overlays outside the local component wrapper, so its
+ * semantic variables live at the document boundary. Components still opt into
+ * structural styling through .frappe-adapter.
+ */
+html:root {
+  --surface-white: var(--theme-surface-raised);
+  --surface-cards: var(--theme-surface-raised);
+  --surface-selected: var(--theme-surface-raised);
+  --surface-modal: var(--theme-popup);
+  --surface-menu-bar: var(--theme-surface);
+  --surface-gray-1: var(--theme-surface);
+  --surface-gray-2: var(--theme-field);
+  --surface-gray-3: color-mix(in oklch, var(--theme-text) 8%, var(--theme-field));
+  --surface-gray-4: color-mix(in oklch, var(--theme-text) 14%, var(--theme-surface));
+  --surface-gray-5: color-mix(in oklch, var(--theme-text) 24%, var(--theme-surface));
+  --surface-gray-6: color-mix(in oklch, var(--theme-text) 72%, var(--theme-surface));
+  --surface-gray-7: var(--theme-text);
+  --surface-blue-2: color-mix(in oklch, var(--theme-primary) 12%, var(--theme-surface-raised));
+  --surface-blue-3: color-mix(in oklch, var(--theme-primary) 22%, var(--theme-surface-raised));
+  --surface-blue-5: var(--theme-primary);
+  --surface-green-2: color-mix(in oklch, var(--theme-success) 12%, var(--theme-surface-raised));
+  --surface-green-3: var(--theme-success);
+  --surface-red-2: color-mix(in oklch, var(--theme-error) 12%, var(--theme-surface-raised));
+  --surface-red-3: color-mix(in oklch, var(--theme-error) 20%, var(--theme-surface-raised));
+  --surface-red-4: color-mix(in oklch, var(--theme-error) 30%, var(--theme-surface-raised));
+  --surface-red-5: var(--theme-error);
+  --surface-red-6: color-mix(in oklch, var(--theme-error) 82%, black);
+  --surface-red-7: color-mix(in oklch, var(--theme-error) 68%, black);
+
+  --ink-white: var(--theme-primary-foreground);
+  --ink-gray-9: var(--theme-text);
+  --ink-gray-8: var(--theme-text);
+  --ink-gray-7: color-mix(in oklch, var(--theme-text) 88%, var(--theme-text-muted));
+  --ink-gray-6: var(--theme-text-muted);
+  --ink-gray-5: var(--theme-text-muted);
+  --ink-gray-4: color-mix(in oklch, var(--theme-text-muted) 68%, var(--theme-surface));
+  --ink-gray-3: color-mix(in oklch, var(--theme-text-muted) 52%, var(--theme-surface));
+  --ink-blue-3: var(--theme-primary);
+  --ink-blue-2: var(--theme-primary);
+  --ink-blue-link: var(--theme-primary);
+  --ink-green-2: var(--theme-success);
+  --ink-green-3: var(--theme-success);
+  --ink-red-2: var(--theme-error);
+
+  --outline-gray-1: color-mix(in oklch, var(--theme-border) 68%, transparent);
+  --outline-gray-2: var(--theme-border);
+  --outline-gray-3: color-mix(in oklch, var(--theme-text) 24%, var(--theme-border));
+  --outline-gray-4: color-mix(in oklch, var(--theme-primary) 52%, var(--theme-border));
+  --outline-gray-5: color-mix(in oklch, var(--theme-primary) 72%, var(--theme-border));
+  --outline-gray-6: var(--theme-primary);
+  --outline-gray-8: var(--theme-primary);
+  --outline-gray-modals: color-mix(in oklch, var(--theme-primary) 34%, var(--theme-border));
+  --outline-blue-1: color-mix(in oklch, var(--theme-primary) 42%, var(--theme-border));
+  --outline-green-2: color-mix(in oklch, var(--theme-success) 52%, var(--theme-border));
+  --outline-red-1: color-mix(in oklch, var(--theme-error) 42%, var(--theme-border));
+  --outline-red-2: color-mix(in oklch, var(--theme-error) 62%, var(--theme-border));
+}
+
+.frappe-adapter {
+  color: var(--theme-text);
+  font-family: var(--font-family-a);
+  font-size: var(--font-size--1);
+}
+
+/* Preserve Frappe's component geometry. Only real field shells receive the
+ * system field radius; internal combobox inputs and checkboxes are excluded. */
+.frappe-adapter :is(
+  input:not([type="checkbox"]):not([data-slot="input"]),
+  textarea,
+  [data-slot="trigger"]
+) {
+  border-radius: var(--component-radius-field);
+}
+
+/* Frappe Button has this root signature. Segmented TabButtons, switches,
+ * combobox chevrons, and list-row buttons retain their official geometry. */
+.frappe-adapter button.inline-flex.items-center.justify-center.shrink-0:not([data-slot="tab-button"]):not([role="switch"]),
+button.frappe-adapter.inline-flex.items-center.justify-center.shrink-0:not([data-slot="tab-button"]):not([role="switch"]) {
+  border-radius: var(--component-radius-button);
+}
+
+.frappe-adapter .bg-blue-500,
+.frappe-adapter .bg-surface-blue-5 {
+  background-color: var(--theme-primary) !important;
+}
+
+.frappe-adapter .bg-surface-green-3 { background-color: var(--theme-success) !important; }
+.frappe-adapter .bg-surface-red-5 { background-color: var(--theme-error) !important; }
+.frappe-adapter .text-ink-blue-3 { color: var(--theme-primary) !important; }
+
+/* Badge and switch geometry are intentional Frappe primitives. */
+.frappe-adapter .whitespace-nowrap.rounded-full { width: fit-content; max-width: 100%; }
+.frappe-adapter [role="switch"] { border-radius: var(--radius-full); }
+
+/* Popovers are teleported to body, outside .frappe-adapter. Their semantic
+ * surface class is the stable provider hook for background and block shape. */
+.bg-surface-modal:is(.rounded-lg, [class*="rounded-"]) {
+  border-radius: var(--component-radius-block);
+  background-color: var(--theme-popup);
+  color: var(--theme-text);
+}
+
+.frappe-data-surface,
+.frappe-tree-surface,
+.frappe-calendar-surface {
+  overflow: hidden;
+  border: var(--border-width-system) solid var(--theme-border);
+  border-radius: var(--component-radius-block);
+  background: var(--theme-surface-raised);
+  box-shadow: var(--shadow-1);
+}
+
+.frappe-data-surface { padding: var(--spacing-xs); }
+.frappe-tree-surface { padding: var(--spacing-s); }
+.frappe-tree-surface li { color: var(--theme-text); }
+.frappe-tree-surface .border-r { border-color: var(--theme-border); }
+.frappe-calendar-surface { min-height: 31rem; padding: var(--spacing-s); }
+.frappe-calendar-surface { color: var(--theme-text); }
+.frappe-calendar-surface :is(.text-black, .text-ink-gray-9, .text-ink-gray-8, .text-ink-gray-7) { color: var(--theme-text) !important; }
+.frappe-calendar-surface .bg-surface-white { background-color: var(--theme-surface-raised); }
+.frappe-calendar-surface :is(.border-outline-gray-1, .border-b, .border-l, .border-r, .border-t) { border-color: var(--theme-border); }
+.frappe-calendar-surface .cell:hover { background: color-mix(in oklch, var(--theme-primary) 8%, transparent); }
+.frappe-calendar-surface .event {
+  --bg: color-mix(in oklch, var(--theme-primary) 11%, var(--theme-surface-raised)) !important;
+  --bg-hover: color-mix(in oklch, var(--theme-primary) 17%, var(--theme-surface-raised)) !important;
+  --bg-active: color-mix(in oklch, var(--theme-primary) 24%, var(--theme-surface-raised)) !important;
+  --text: var(--theme-text) !important;
+  --text-active: var(--theme-text) !important;
+  --subtext: var(--theme-text-muted) !important;
+  --subtext-active: var(--theme-text-muted) !important;
+  --border: var(--theme-primary) !important;
+  --border-active: var(--theme-primary) !important;
+}
+
+/* endregion FRAPPE UI PROVIDER ADAPTER */
+
+/* =============================================================================
+/* region SPECIALIST PROVIDER ADAPTER
+/* ============================================================================= */
+
+.specialist-adapter {
+  --provider-canvas: var(--theme-canvas);
+  --provider-surface: var(--theme-surface-raised);
+  --provider-border: var(--theme-border);
+  --provider-text: var(--theme-text);
+  --provider-muted: var(--theme-text-muted);
+  --provider-primary: var(--theme-primary);
+  --provider-secondary: var(--theme-secondary);
+  color: var(--theme-text);
+  font-family: var(--font-family-a);
+}
+
+/* endregion SPECIALIST PROVIDER ADAPTER */
