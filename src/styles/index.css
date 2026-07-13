@@ -1,5 +1,4 @@
 @import "./tokens.css";
-@import "./visual-primitives.css";
 @import "./provider-adapters.css";
 @import "@vue-flow/core/dist/style.css";
 @import "@vue-flow/core/dist/theme-default.css";

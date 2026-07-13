@@ -5,6 +5,7 @@ import ComponentCatalogue from "./views/ComponentCatalogue.vue"
 import BlockCatalogue from "./views/BlockCatalogue.vue"
 import ControlDashboard from "./views/ControlDashboard.vue"
 import ExampleSite from "./views/ExampleSite.vue"
+import WebsiteTested from "./views/WebsiteTested.vue"
 import { controls } from "./lib/design-system"
 
 // =============================================================================
@@ -17,6 +18,7 @@ const navigation = [
   { id: "components", step: "02", label: "Components", detail: "Test the language" },
   { id: "blocks", step: "03", label: "Blocks", detail: "Compose sections" },
   { id: "example", step: "04", label: "Website", detail: "See it composed" },
+  { id: "tested", step: "05", label: "Website Tested", detail: "Stress-test styles" },
 ]
 
 const toggleTheme = () => {
@@ -58,6 +60,7 @@ const toggleTheme = () => {
       <ComponentCatalogue v-show="activeView === 'components'" />
       <BlockCatalogue v-show="activeView === 'blocks'" />
       <ExampleSite v-show="activeView === 'example'" />
+      <WebsiteTested v-show="activeView === 'tested'" />
     </main>
   </div>
 </template>

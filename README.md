@@ -41,7 +41,7 @@ The interactive control plane changes:
 
 The generated ramp logic is in `src/lib/design-system.js`. Baseline values and Utopia scales are in `src/styles/tokens.css`.
 
-The visual primitive catalogue contains directly applicable gradients, patterns, textures, lighting layers, and shape fields. Primitive CSS payloads live in `src/styles/visual-primitives.css`; searchable metadata and stacking behavior live in `src/lib/visual-primitive-registry.js`. Composition recipes remain separate under Design Concepts.
+The visual primitive catalogue contains parameterized fields, structural geometry, lighting, SVG motif systems, regional masks, edge treatments, focal features, and restrained material passes. Metadata and control schemas live in `src/lib/visual-primitive-registry.js`; the shared CSS/SVG renderer lives in `src/components/primitives/VisualPrimitivePreview.vue`. Composition recipes remain separate under Design Concepts.
 
 ## Component Proof Coverage
 

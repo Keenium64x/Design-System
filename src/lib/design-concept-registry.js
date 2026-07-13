@@ -1,28 +1,19 @@
 // =============================================================================
-// region DESIGN CONCEPT REGISTRY
+// region APPROVED COMPOSITION RECIPES
 // =============================================================================
 
-const concept = (id, name, category, description, recipe) => ({ id, name, category, description, recipe })
-
 export const designConceptRegistry = [
-  concept("corner-inset", "Corner inset", "Framing", "Corner brackets expose the padding boundary without enclosing the whole surface.", ["pattern-grid-large", "light-spot-corner"]),
-  concept("layered-atmosphere", "Layered atmosphere", "Surface composition", "A quiet gradient, sparse texture and localized light form one dimensional field.", ["gradient-silk", "texture-noise-fine", "light-spot-corner"]),
-  concept("technical-field", "Technical field", "Surface composition", "A module grid, trace texture and edge light create an engineered surface.", ["pattern-grid-large", "pattern-circuit", "light-edge-top"]),
-  concept("editorial-focus", "Editorial focus", "Surface composition", "Open tonal field, single motif and subtle paper texture preserve hierarchy.", ["gradient-horizon", "shape-twin-orbs", "texture-paper"]),
-  concept("chromatic-depth", "Chromatic depth", "Surface composition", "Mesh color, grain and vignette produce depth without another container.", ["gradient-mesh", "texture-noise-fine", "light-vignette"]),
-  concept("luminous-glass", "Luminous glass", "Surface composition", "Ambient color, micro-glass haze and rim light create a translucent material.", ["gradient-silk", "texture-glass", "light-rim"]),
-  concept("soft-geometry", "Soft geometry", "Surface composition", "Large rounded motifs sit over a restrained tonal and grain base.", ["gradient-silk", "shape-orb-triad", "texture-noise-fine"]),
-  concept("grid-bleed", "Grid bleed", "Layout", "One primitive layer crosses its normal content track while adjacent content stays aligned.", ["pattern-grid-large", "shape-slab-pair"]),
-  concept("split-plane", "Split plane", "Layout", "Two contrasting primitive stacks meet directly instead of being wrapped in cards.", ["gradient-ocean", "gradient-sunset"]),
-  concept("overlap-stack", "Overlap stack", "Layout", "Several primitive-bearing planes overlap with controlled offsets and layer order.", ["pattern-dot-micro", "gradient-duotone", "texture-paper"]),
+  { id: "celestial-hero", name: "Central radial composition", category: "Radial", concept: "A project-owned focal asset organized by one radial system.", topology: "radial", focalSlot: "Project focal asset", recipe: ["tonal-radial", "cartesian-grid", "concentric-rings", "radial-rays", "construction-axis", "radial-region", "map-fractal-noise", "inset-frame"] },
+  { id: "diagonal-executive", name: "Architectural diagonal split", category: "Diagonal", concept: "A precision-cut surface with a project-owned feature in its dark territory.", topology: "diagonal", focalSlot: "Project image, mark or type", recipe: ["split-material", "diagonal-seam", "parallel-guides", "deco-fan", "directional-region", "map-fibre", "corner-brackets"] },
+  { id: "framed-editorial", name: "Framed editorial", category: "Editorial", concept: "A project-owned headline or image held inside an architectural frame.", topology: "cartesian", focalSlot: "Project headline or image", recipe: ["tonal-linear", "inset-frame", "construction-axis", "corner-brackets", "registration-marks", "map-fractal-noise"] },
+  { id: "technical-perspective", name: "Technical perspective field", category: "Perspective", concept: "A controlled journey toward a project-defined focal destination.", topology: "perspective", focalSlot: "Project focal destination", recipe: ["horizon-field", "perspective-grid", "directional-beam", "circuit-routes", "directional-region", "vignette-field", "map-cloud"] },
 ]
 
 export const conceptCategories = ["All", ...new Set(designConceptRegistry.map((item) => item.category))]
-
 export const filterDesignConcepts = (items, filters) => {
   const query = filters.query.trim().toLowerCase()
   return items.filter((item) => filters.category === "All" || item.category === filters.category)
-    .filter((item) => !query || `${item.name} ${item.category} ${item.description} ${item.recipe.join(" ")}`.toLowerCase().includes(query))
+    .filter((item) => !query || `${item.name} ${item.category} ${item.concept} ${item.recipe.join(" ")}`.toLowerCase().includes(query))
 }
 
-// endregion DESIGN CONCEPT REGISTRY
+// endregion APPROVED COMPOSITION RECIPES

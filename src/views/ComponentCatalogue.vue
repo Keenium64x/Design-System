@@ -26,8 +26,8 @@ import ChartShowcase from "@/components/ChartShowcase.vue"
 import FlowShowcase from "@/components/FlowShowcase.vue"
 import GanttShowcase from "@/components/GanttShowcase.vue"
 import { categories, componentRegistry, filterComponents, providers } from "@/lib/component-registry"
-import VisualPrimitivePreview from "@/components/primitives/VisualPrimitivePreview.vue"
-import { filterVisualPrimitives, primitiveCategories, primitiveOrigins, visualPrimitiveRegistry } from "@/lib/visual-primitive-registry"
+import VisualPrimitiveCard from "@/components/primitives/VisualPrimitiveCard.vue"
+import { filterVisualPrimitives, primitiveCategories, primitiveTopologies, primitiveWeights, visualPrimitiveRegistry } from "@/lib/visual-primitive-registry"
 import DesignConceptPreview from "@/components/primitives/DesignConceptPreview.vue"
 import { conceptCategories, designConceptRegistry, filterDesignConcepts } from "@/lib/design-concept-registry"
 
@@ -36,7 +36,7 @@ import { conceptCategories, designConceptRegistry, filterDesignConcepts } from "
 // =============================================================================
 
 const filters = reactive({ query: "", provider: "All", category: "All", sort: "Name" })
-const primitiveFilters = reactive({ query: "", category: "All", origin: "All", sort: "Category" })
+const primitiveFilters = reactive({ query: "", category: "All", topology: "All", weight: "All", sort: "Category" })
 const conceptFilters = reactive({ query: "", category: "All" })
 const enabled = ref(true)
 const checked = ref(true)
@@ -86,34 +86,31 @@ const routedOnlyComponents = computed(() => visibleComponents.value.filter((item
       <nav class="catalogue-jump" aria-label="Component catalogue sections"><a href="#primitives">Primitives</a><a href="#concepts">Design concepts</a><a href="#components">Components</a></nav>
 
       <section id="primitives" class="catalogue-group">
-        <header class="catalogue-group-heading"><div><span>01 · SURFACE ATOMS</span><h2 class="display-heading text-3">Visual primitives</h2></div><p>{{ visiblePrimitives.length }} of {{ visualPrimitiveRegistry.length }} directly applicable layers shown.</p></header>
+        <header class="catalogue-group-heading"><div><span>01 · CONTROLLED VISUAL OPERATIONS</span><h2 class="display-heading text-3">Visual primitives</h2></div><p>{{ visiblePrimitives.length }} of {{ visualPrimitiveRegistry.length }} parameterized primitives shown. Each inherits composition geometry, region and visual weight.</p></header>
         <div class="catalogue-filters frappe-adapter primitive-filters">
-          <FrappeTextInput v-model="primitiveFilters.query" size="md" variant="outline" placeholder="Search primitive, token, function…"><template #prefix><Search :size="16" /></template></FrappeTextInput>
+          <FrappeTextInput v-model="primitiveFilters.query" size="md" variant="outline" placeholder="Search job, topology, renderer…"><template #prefix><Search :size="16" /></template></FrappeTextInput>
           <FrappeSelect v-model="primitiveFilters.category" size="md" variant="outline" :options="primitiveCategories" aria-label="Filter primitives by category" />
-          <FrappeSelect v-model="primitiveFilters.origin" size="md" variant="outline" :options="primitiveOrigins" aria-label="Filter primitives by origin" />
+          <FrappeSelect v-model="primitiveFilters.topology" size="md" variant="outline" :options="primitiveTopologies" aria-label="Filter primitives by topology" />
+          <FrappeSelect v-model="primitiveFilters.weight" size="md" variant="outline" :options="primitiveWeights" aria-label="Filter primitives by weight" />
           <FrappeSelect v-model="primitiveFilters.sort" size="md" variant="outline" :options="['Name','Category']" aria-label="Sort primitives" />
         </div>
         <div class="component-card-grid primitive-card-grid">
-          <article v-for="primitive in visiblePrimitives" :key="primitive.id" class="component-card primitive-card">
-            <header><div><strong>{{ primitive.name }}</strong><span>{{ primitive.category }} · {{ primitive.origin }}</span></div><code>{{ primitive.token }}</code></header>
-            <div class="component-demo"><VisualPrimitivePreview :primitive="primitive" /></div>
-            <p class="primitive-function">{{ primitive.description }}</p>
-          </article>
+          <VisualPrimitiveCard v-for="primitive in visiblePrimitives" :key="primitive.id" :primitive="primitive" />
         </div>
         <div v-if="!visiblePrimitives.length" class="empty-library"><Search :size="24" /><strong>No primitives match</strong><p>Clear or broaden the filters to restore the visual vocabulary.</p></div>
       </section>
 
       <section id="concepts" class="catalogue-group">
-        <header class="catalogue-group-heading"><div><span>02 · COMPOSITION RECIPES</span><h2 class="display-heading text-3">Design concepts</h2></div><p>Ways to combine or position primitives. These are recipes, not atomic surface layers.</p></header>
+        <header class="catalogue-group-heading"><div><span>02 · SHARED COMPOSITION GRAMMAR</span><h2 class="display-heading text-3">Design concepts</h2></div><p>Approved recipes with one concept, topology, focal relationship, safe zone and ordered primitive stack.</p></header>
         <div class="catalogue-filters frappe-adapter concept-filters">
           <FrappeTextInput v-model="conceptFilters.query" size="md" variant="outline" placeholder="Search concept or primitive recipe…"><template #prefix><Search :size="16" /></template></FrappeTextInput>
           <FrappeSelect v-model="conceptFilters.category" size="md" variant="outline" :options="conceptCategories" aria-label="Filter concepts by category" />
         </div>
         <div class="component-card-grid primitive-card-grid">
           <article v-for="concept in visibleConcepts" :key="concept.id" class="component-card primitive-card">
-            <header><div><strong>{{ concept.name }}</strong><span>{{ concept.category }}</span></div><code>{{ concept.recipe.length }} layers</code></header>
+            <header><div><strong>{{ concept.name }}</strong><span>{{ concept.category }} · {{ concept.topology }}</span></div><code>{{ concept.recipe.length }} nodes</code></header>
             <div class="component-demo"><DesignConceptPreview :concept="concept" /></div>
-            <p class="primitive-function">{{ concept.description }}</p>
+            <p class="primitive-function">{{ concept.concept }}</p>
             <div class="concept-recipe"><code v-for="id in concept.recipe" :key="id">{{ id }}</code></div>
           </article>
         </div>
